@@ -1,0 +1,18 @@
+node_modules
+build
+# Directory 
+lib-cov
+# Coverage
+coverage
+
+# nyc test coverage
+.nyc_output
+*processinfo
+# dotenv environment variables file
+.env
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

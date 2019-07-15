@@ -1,0 +1,384 @@
+{
+  "swagger" : "2.0.0",
+  "info" : {
+    "description" : "Property Pro Lite is a platform where people can create and/or search properties for sale or rent.",
+    "version" : "2.0.0",
+    "title" : "Property Pro Lite",
+    "contact" : {
+      "name" : "PropertyPro Lite API Documentation",
+      "url" : "https://propertypro-lite-api.herokuapp.com/api-docs"
+    }
+  },
+  "host" : "propertypro-lite-api.herokuapp.com",
+  "basePath" : "/api/v1",
+  "tags" : [ {
+    "name" : "Authentication",
+    "description" : "Signup and Signin Endpoints"
+  } ],
+  "schemes" : [ "https", "http" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/auth/signup" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "User signup endpoint",
+        "description" : "This is Endpoint that allows a user signup to the Propertypro-Lite",
+        "operationId" : "AuthSignupPost",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User-Model"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/auth/signin" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "User sign in endpoint",
+        "description" : "This Endpoint that allows registered users to sign in to the Property-pro Lite",
+        "operationId" : "AuthSigninPost",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/signIn-Model"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/property" : {
+      "get" : {
+        "tags" : [ "Fetch all properties" ],
+        "summary" : "Get all property Advert",
+        "description" : "Endpoint that fetches all properties",
+        "operationId" : "PropertyGet",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      },
+      "post" : {
+        "tags" : [ "Post new property" ],
+        "summary" : "Post new Property",
+        "description" : "Endpoint to post a property",
+        "operationId" : "PropertyPost",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "type" : "string",
+          "default" : "Bearer {token}"
+        }, {
+          "name" : "state",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "city",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "address",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "image",
+          "in" : "formData",
+          "description" : "Choose an image of Property",
+          "required" : true,
+          "type" : "file"
+        }, {
+          "name" : "price",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/property?type=propertyType" : {
+      "get" : {
+        "tags" : [ "Fetch specific property type" ],
+        "summary" : "Get all properties of specific type",
+        "description" : "User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat etc.",
+        "operationId" : "PropertyGet",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "All properties of specific types",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/property/2" : {
+      "patch" : {
+        "tags" : [ "Update a property" ],
+        "summary" : "Update Property",
+        "description" : "Endpoint to Update a property",
+        "operationId" : "Patch 2",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "type" : "string",
+          "default" : "Bearer {token}"
+        }, {
+          "name" : "state",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "city",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "address",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "image",
+          "in" : "formData",
+          "description" : "Choose an image of Property",
+          "required" : true,
+          "type" : "file"
+        }, {
+          "name" : "price",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/property/2/Sold" : {
+      "patch" : {
+        "tags" : [ "Mark property as sold" ],
+        "summary" : "Mark Property as sold",
+        "description" : "User (agent) can mark his/her posted advert as sold.",
+        "operationId" : "Property4SoldPatch",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "type" : "string",
+          "default" : "Bearer {token}"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/property/1" : {
+      "get" : {
+        "tags" : [ "Property Routes" ],
+        "summary" : "Get A property",
+        "description" : "Endpoint that fetches a specific property.",
+        "operationId" : "Property1Get",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : false,
+          "type" : "string",
+          "default" : "Bearer {token}"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      },
+      "delete" : {
+        "tags" : [ "Delete a property" ],
+        "summary" : "Delete Property",
+        "description" : "Endpoint that allows user(Agent) to delete advert posted by him or her",
+        "operationId" : "Delete 1",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "type" : "string",
+          "default" : "Bearer {token}"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
+    }
+  },
+  "securityDefinitions" : { },
+  "definitions" : {
+    "User-Model" : {
+      "type" : "object",
+      "required" : [ "address", "email", "first_name", "last_name", "password", "phoneNumber" ],
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        },
+        "first_name" : {
+          "type" : "string"
+        },
+        "last_name" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Signup",
+      "example" : {
+        "email" : "nccharles@gmail.com",
+        "first_name" : "Charles",
+        "last_name" : "Ndayisaba",
+        "password" : "Ncinhouse",
+        "phoneNumber" : "0784603404",
+        "address" : "Kigali, Rwanda"
+      }
+    },
+    "signIn-Model" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Signin",
+      "example" : {
+        "email" : "nccharles@gmail.com",
+        "password" : "Ncinhouse"
+      }
+    },
+    "Property-Model" : {
+      "type" : "object",
+      "required" : [ "address" ],
+      "properties" : {
+        "state" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "image" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Add new Property",
+      "example" : {
+        "state" : "Kigali",
+        "city" : "Kicukiro",
+        "address" : "Kicukiro, Kigali, Rwanda",
+        "type" : "3-bedroom",
+        "image" : "https://image123.com",
+        "price" : 1240000,
+        "created_on" : "3225346546"
+      }
+    }
+  }
+}
