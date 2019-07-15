@@ -14,18 +14,21 @@
     "generate-lcov": "nyc report --reporter=text-lcov >lcov.info",
     "coveralls-coverage": "coveralls < lcov.info",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
-    "coverage": "npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage"
+    "coverage": "npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",
+    "db:migrate": "node --require @babel/register server/migrations/index.js --exit",
+    "test:db:migrate": "NODE_ENV=test node --require @babel/register server/migrations/index.js --exit",
+    "db:create": "sudo -u postgres psql -qAtX -v ON_ERRORS_STOP=1 -f server/database/createdb.sql"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nccharles/PropertyPro-lite.git"
+    "url": "git+https://github.com/nccharles/Pro-Lite-API.git"
   },
   "author": "Charles NDAYISABA",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nccharles/PropertyPro-lite/issues"
+    "url": "https://github.com/nccharles/Pro-Lite-API/issues"
   },
-  "homepage": "https://github.com/nccharles/PropertyPro-lite#readme",
+  "homepage": "https://github.com/nccharles/Pro-Lite-API#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",

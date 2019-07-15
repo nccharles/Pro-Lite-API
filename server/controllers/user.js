@@ -1,50 +1,81 @@
-import UserModel from '../models/user';
 import { serverFeedback, userFeedback, findError } from '../helpers/Feedback';
 import Authentication from '../helpers/auth';
 import { generateToken } from '../middleware/handleToken';
-const User = {
+import db from "../database";
+export default class User {
 
-  signUp(req, res) {
-    try {
-    if (!req.body.first_name && !req.body.last_name && !req.body.email && !req.body.password && !req.body.address && !req.body.phoneNumber) {
-      return serverFeedback(res, 400, ...['status', 400, 'error', 'Please Fill all fields' ])
-    }
-    const allUserList = UserModel.AllUsers();
-    const Index = allUserList.findIndex(u => u.email === req.body.email);
-    if (Index >= 0){
-      return serverFeedback(res, 403, ...['status', 403, 'error', 'User already exist']);
-    }
-    const User = UserModel.signUp(req.body);
-    return userFeedback(res, 201, User);
-  } catch (err) {
-    return findError(res);
-  }
-  },
-  login(req, res) {
-    try {
-      const { password, email } = req.body;
-      const allUserList = UserModel.AllUsers();
-      const displayUser = allUserList.find(u => u.email === email);
-      if (!displayUser) {
-        return serverFeedback(res, 403, ...['status', 403,'error','Invalid email']);
-      }
-
-      const decryptedPassword = Authentication.comparePassword(displayUser.password,password);
-      if (!decryptedPassword) {
-        return serverFeedback(res, 422, ...['status', 422,'error','Incorrect Password']);
-      }
-      const {
-        id, phoneNumber, first_name, last_name
-      } = displayUser;
-      const token = generateToken({ id, email, phoneNumber });
-      const loggedIn = {
-        id, token, first_name, last_name, email
+  static signUp(req, res) {
+    try{
+    const queryText = `
+    INSERT INTO users(first_name, last_name, email, password,phoneNumber,address)
+    VALUES($1, $2, $3, $4, $5)
+    returning *
+    `;
+    const hashPassword = Authentication.hashPassword(req.body.password)
+          const newUser = [
+            req.body.firstName,
+            req.body.lastName,
+            req.body.email,
+            hashPassword,
+            req.body.phoneNumber,
+            req.body.address
+          ];
+          db.query(queryText, newUser)
+            .then(userRes => {
+              const {id,email,password}=newUser
+              generateToken({id,password,email})
+            })
+            .catch(err => {
+                return serverFeedback(res, 403, ...['status', 403,'error',err]);
+            });
+        }catch(err) {
+          return findError(res);
       };
-      return userFeedback(res, 200, loggedIn);
-    } catch (err) {
-      return findError(res);
     }
+  // user signup
+  static signIn(req, res) {
+    const { email, password } = req.body;
+    const queryText = `
+      SELECT *  FROM users WHERE email = $1 LIMIT 1
+    `;
+    const value = [email];
+    db.query(queryText, value)
+      .then(response => {
+        if (!response) {
+          return serverFeedback(
+            res,
+            404,
+            "error",
+            "User not found"
+          );
+        }
+        const decryptedPassword = Authentication.comparePassword(response.password,password);
+        if (!decryptedPassword) {
+          return serverFeedback(res, 422, ...['status', 422,'error','Incorrect Password']);
+        }
+        const {
+          id, phoneNumber, first_name, last_name
+        } = response;
+        const token = generateToken({ id, email, phoneNumber });
+        const loggedIn = {
+          id, token, first_name, last_name, email
+        };
+        return userFeedback(res, 200, loggedIn);
+      }).catch(err=> {
+        return findError(res);
+      })
   }
+  //get current user
+  static currentUser(req, res) {
+    db.findById("users", req.user.id)
+      .then(response => {
+        const user = { ...response, password: null };
+        delete user.password;
+        userFeedback(res, 200, "user", user);
+      })
+      .catch(err => {
+        return findError(res);
+      });
+  }
+  
 }
-
-export default User;

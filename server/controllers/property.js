@@ -2,6 +2,7 @@ import UserModel from "../models/user";
 import PropertyModel from "../models/property";
 import { serverFeedback, findError } from "../helpers/Feedback";
 import imageUpload from "../middleware/cloudinary";
+
 const Property = {
     async addProperty(req, res) {
         console.log(req.body)
