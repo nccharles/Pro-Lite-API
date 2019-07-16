@@ -6,13 +6,13 @@ lib-cov
 coverage
 
 # nyc test coverage
+lcov.info
 .nyc_output
 *processinfo
 # dotenv environment variables file
 .env
 # Logs
 logs
-.github
 git rm —cached
 *.log
 npm-debug.log*
