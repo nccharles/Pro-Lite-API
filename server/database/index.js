@@ -1,11 +1,9 @@
 import "dotenv/config";
 import { Pool } from "pg";
-import dbConfig from "../config/database";
-//configurate the environment
-const env = process.env.NODE_ENV || "development";
+import { DB } from "../config/database";
 const query = (text, params, isArr = false) => {
   const pool = new Pool({
-    connectionString: dbConfig[env]
+    connectionString: DB
   });
   return new Promise((resolve, reject) => {
     pool
@@ -21,33 +19,42 @@ const query = (text, params, isArr = false) => {
       });
   });
 };
-const findById = (table, id) => {
+const queryCreate = async (table, columns, values) => {
   const pool = new Pool({
-    connectionString: dbConfig[env]
+    connectionString: DB
   });
-  const queryText = `
-      SELECT *  FROM ${table} WHERE id = $1 LIMIT 1
-    `;
-  const values = [id];
-  return new Promise((resolve, reject) => {
-    pool
-      .query(queryText, values)
-      .then(response => {
-        const { rows } = response;
-        resolve(rows[0]);
-        pool.end();
-      })
-      .catch(err => {
-        //console.log(err);
-        reject(err);
-        pool.end();
-      });
+  const queryString = `INSERT INTO ${table} (${columns}) VALUES (${values}) RETURNING *;`;
+  const { rows: Result } = await pool.query(queryString);
+  return Result[0];
+};
+const querySignin = async (columns, condition) => {
+  const pool = new Pool({
+    connectionString: DB
   });
+  const queryString = `SELECT ${columns} FROM users ${condition};`;
+  const { rows } = await pool.query(queryString);
+  return rows;
+};
+const findByOne =async (columns, condition) => {
+  const pool = new Pool({
+    connectionString: DB
+  });
+  const query = `SELECT ${columns} FROM property AS p,users as u ${condition};`;
+  const { rows } = await pool.query(query);
+  return rows;
 };
 
+const getProperties = async (columns,condition)=> {
+  const pool = new Pool({
+    connectionString: DB
+  });
+  const query = `SELECT ${columns} FROM property AS p,users as u ${condition};`;
+  const { rows } = await pool.query(query);
+  return rows;
+}
 const createTable = migrationText => {
   const pool = new Pool({
-    connectionString: dbConfig[env]
+    connectionString: DB
   });
   return new Promise((resolve, reject) => {
     pool
@@ -63,4 +70,4 @@ const createTable = migrationText => {
   });
 };
 
-export default { query, createTable, findById };
+export default { query,getProperties, queryCreate, querySignin, createTable, findByOne };

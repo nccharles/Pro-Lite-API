@@ -6,8 +6,9 @@ import prouter from './routers/property';
 import bodyParser from 'body-parser'
 const app = express();
 const port = process.env.PORT || 8080
+// Body parser Middleware
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json())
 app.get('/', (req, res) => {
   return res.status(200).json({
     status: 200,

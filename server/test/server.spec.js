@@ -2,10 +2,30 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import 'dotenv/config';
 import server from '../server';
-
+import db from "../database";
 const { expect } = chai;
 chai.use(chaiHttp);
 let userToken = null;
+describe("TESTING DATABASE", () => {
+  describe("Create Test Tables", () => {
+    it("It should create user table", done => {
+      const queryText = `CREATE TABLE IF NOT EXISTS test( id SERIAL);`;
+      db.createTable(queryText)
+        .then(response => {
+          expect(response).to.haveOwnProperty("command")
+            .eql("CREATE");
+            expect(response).to.haveOwnProperty("rowCount")
+            .eql(null);
+          done();
+        })
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    });
+
+  });
+    
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
     chai.request(server)
@@ -18,11 +38,11 @@ describe('Testing welcome endpoints', () => {
         done();
       });
   });
-  it('should insert user data to the memory', (done) => {
+  it('should insert user data to the database', (done) => {
     chai.request(server)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'chris@gmail.com',
+        email: 'nccharles1@gmail.com',
         first_name: 'Charles',
         last_name: 'NDAYISABA',
         password: 'Ncinhouse',
@@ -32,7 +52,7 @@ describe('Testing welcome endpoints', () => {
       .end((err, res) => {
         userToken = res.body.data.token;
         if (err) return done(err);
-        expect(res.body).to.have.keys('status', 'data');
+        expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.be.a('number');
         expect((res.body)).to.be.an('object');
         expect((res.body.data.token)).to.be.a('string');
@@ -50,7 +70,7 @@ describe('Testing welcome endpoints', () => {
       .post('/api/v1/auth/signin')
       .send({
         email: 'nccharles1@gmail.com',
-        password: 'ncinhouse'
+        password: 'Ncinhouse'
       })
       .end((err, res) => {
         if (err) return done(err);
@@ -118,11 +138,13 @@ describe('ENDPOINTS TESTING', () => {
         if (err) {
           done(err);
         }
-        expect(res.body).to.have.keys('status', 'data');
+        expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').that.equals(200);
         expect(res.body).to.have.ownProperty('data').to.be.an('object');
+        expect(res.body).to.have.ownProperty('message').to.be.an('object');
+        expect(res.body).to.have.ownProperty('message').to.equal('Property Successfully posted');
         expect(res.body.data.id).to.be.a('number');
         expect(res.body.data.owner).to.be.a('number');
         expect(res.body.data.status).to.be.a('string');
@@ -157,19 +179,7 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-  it('should get all specific property types', (done) => {
-    chai.request(server)
-      .get('/api/v1/property/?type=2-bedroom')
-      .end((err, res) => {
-        if (err) done(err);
-        expect(res.body).to.have.keys('status', 'data');
-        expect(res.status).to.be.a('number');
-        expect(res.body).to.be.an('object');
-        expect(res.body).to.have.ownProperty('status').to.be.a('number');
-        expect(res.body).to.have.ownProperty('data').to.be.an('object');
-        done();
-      });
-  });
+  
   it('should retrieve a Specific Property', (done) => {
     chai.request(server)
       .get('/api/v1/property/1')
@@ -213,6 +223,19 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
+  it('should get all specific property types', (done) => {
+    chai.request(server)
+      .get('/api/v1/property/?type=2-bedroom')
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.body).to.have.keys('status','message','data');
+        expect(res.status).to.be.a('number');
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.ownProperty('status').to.be.a('number');
+        expect(res.body).to.have.ownProperty('data').to.be.an('object');
+        done();
+      });
+  });
   it('should delete a property', (done) => {
     chai.request(server)
       .delete('/api/v1/property/2')
@@ -233,7 +256,7 @@ describe('ENDPOINTS TESTING', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body).to.have.keys('status', 'message');
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
@@ -264,7 +287,7 @@ describe('ENDPOINTS TESTING', () => {
       .patch('/api/v1/property/2/sold')
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status', 'error');
+        expect(res.body).to.have.keys('status', 'message','data');
         expect(res.status).to.equal(403);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
@@ -274,4 +297,30 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
+  it("It should truncate table users", done => {
+    const queryText = "TRUNCATE users CASCADE";
+    db.query(queryText)
+      .then(response => {
+          console.log(response)
+          expect(response).to.be.an("array");
+          expect(response.length).to.equal(0);
+        done();
+      })
+      .catch(err => {
+        done();
+      });
+  });
+  it("It should truncate table property", done => {
+    const queryText = "TRUNCATE property CASCADE";
+    db.query(queryText)
+      .then(response => {
+          expect(response).to.be.an("array");
+          expect(response.length).to.equal(0);
+        done();
+      })
+      .catch(err => {
+        done();
+      });
+  });
+});
 });

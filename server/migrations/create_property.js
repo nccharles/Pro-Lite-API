@@ -14,7 +14,7 @@ const propertyMigration = `CREATE TABLE property(
 (() => {
   db.createTable(propertyMigration)
     .then(response => {
-      console.log("users table created");
+      console.log("Property table created");
       return;
     })
     .catch(err => {

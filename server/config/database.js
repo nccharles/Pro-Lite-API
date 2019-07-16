@@ -1,7 +1,3 @@
 import "dotenv/config";
-
-export default {
-  development: process.env.DEV_DB_URL,
-  test: process.env.TEST_DB_URL,
-  production: process.env.DATABASE_URL
-};
+export const DB = (process.env.NODE_ENV === 'development') ? process.env.DB_DEV_URL
+: (process.env.NODE_ENV === 'test') ? process.env.DB_TEST_URL : process.env.DB_URL;
