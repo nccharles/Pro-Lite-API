@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/nccharles/PropertyPro-lite.svg?branch=develop)](https://travis-ci.org/nccharles/PropertyPro-lite)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3877d4edcb80503f7479/maintainability)](https://codeclimate.com/github/nccharles/PropertyPro-lite/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5daa11aac53bf04a7ffa/maintainability)](https://codeclimate.com/github/nccharles/Pro-Lite-API/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/nccharles/PropertyPro-lite/badge.svg?branch=develop)](https://coveralls.io/github/nccharles/PropertyPro-lite?branch=develop)
 # PropertyPro-lite
 Property Pro Lite is a platform where people can create and/or search properties for sale or rent.
