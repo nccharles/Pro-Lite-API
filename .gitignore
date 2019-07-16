@@ -1,0 +1,20 @@
+node_modules
+build
+# Directory 
+lib-cov
+# Coverage
+coverage
+
+# nyc test coverage
+.nyc_output
+*processinfo
+# dotenv environment variables file
+.env
+# Logs
+logs
+.github
+git rm —cached
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
