@@ -7,24 +7,19 @@ const { expect } = chai;
 chai.use(chaiHttp);
 let userToken = null;
 describe("TESTING DATABASE", () => {
-  describe("Create Test Tables", () => {
-    it("It should create user table", done => {
-      const queryText = `CREATE TABLE IF NOT EXISTS test( id SERIAL);`;
-      db.createTable(queryText)
+    it("It should truncate table users", done => {
+      const queryText = "TRUNCATE users CASCADE";
+      db.query(queryText)
         .then(response => {
-          expect(response).to.haveOwnProperty("command")
-            .eql("CREATE");
-            expect(response).to.haveOwnProperty("rowCount")
-            .eql(null);
+            expect(response).to.be.an("array");
+            expect(response.length).to.equal(0);
           done();
         })
         .catch(err => {
-          console.log(err);
           done();
         });
     });
-
-  });
+})
     
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
@@ -282,9 +277,10 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
+ 
   it('should return a message `Token must be provided`', (done) => {
     chai.request(server)
-      .patch('/api/v1/property/2/sold')
+      .patch('/api/v1/property/1/sold')
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status', 'message','data');
@@ -294,19 +290,6 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body.status).to.be.a('number');
         expect(res.body.error).to.be.an('string');
         expect(res.body.error).to.equal('Token must be provided');
-        done();
-      });
-  });
-  it("It should truncate table users", done => {
-    const queryText = "TRUNCATE users CASCADE";
-    db.query(queryText)
-      .then(response => {
-          console.log(response)
-          expect(response).to.be.an("array");
-          expect(response.length).to.equal(0);
-        done();
-      })
-      .catch(err => {
         done();
       });
   });
@@ -322,5 +305,4 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-});
 });

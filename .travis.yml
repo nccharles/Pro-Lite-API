@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "stable"
+
+services:
+  - postgresql
+
 cache:
   directories:
     - "node_modules"
@@ -8,12 +12,14 @@ cache:
 install:
   - npm install
 
+before_script:
+  - psql -c 'create database propertytestdb;' -U postgres
+  - npm run test:db:migrate
 script:
   - npm run test
-
 after_success:
   - npm run coverage
 
 env:
   global:
-    - CODECLIMATE_REPO_TOKEN=3f5a0e876e18567858bdefe7bdebb70b6451d89087f68bedb6aa283e18b15bcf
+    - CODECLIMATE_REPO_TOKEN=c42eb143e9c3d44fab6de21a62cc7cb04bb82129d70af3e6c27aa56f2d51ee84
