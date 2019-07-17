@@ -18,7 +18,7 @@ const Property = {
             db.queryCreate(table, columns, values)
                 .then(property => {
                     if (property) {
-                        return serverFeedback(res, 200, ...['status', 200, 'Property Successfully posted', 'data', property]);
+                        return serverFeedback(res, 201, ...['status', 201, 'Property Successfully posted', 'data', property]);
                     }
                     return findError(res);
                 })
