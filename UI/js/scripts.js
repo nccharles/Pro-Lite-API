@@ -17,9 +17,7 @@ fileUpload.addEventListener('change', (event)=>{
         },
         data:formData
     }).then(res=>{
-        console.log(res)
         imgPreview.src=res.data.secure_url;
     }).catch(err=>{
-        console.log(err)
     });
 });

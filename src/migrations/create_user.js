@@ -13,11 +13,9 @@ IF NOT EXISTS users
 (() => {
   db.createTable(userMigration)
     .then(response => {
-      console.log("users table created");
       return;
     })
     .catch(err => {
-      console.log(err);
       return;
     });
 })();

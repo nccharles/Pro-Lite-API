@@ -41,10 +41,10 @@ yarn run start-dev
 - https://nccharles.github.io/PropertyPro-lite/
 
 #### API URL
-- https://propertypro-lite-api.herokuapp.com/
+- https://pro-lite-api.herokuapp.com/
 
 #### API Documentation
--  https://propertypro-lite-api.herokuapp.com/api-docs
+-  https://pro-lite-api.herokuapp.com/api-docs
 
 #### User Access
 Signing into the property-pro-lite platform will require a login details as:
@@ -61,25 +61,25 @@ Signing into the property-pro-lite platform will require a login details as:
 
 
 #### Endpoints
-- GET https://propertypro-lite-api.herokuapp.com/ - Welcome Endpoint
-- GET https://propertypro-lite-api.herokuapp.com/api-docs - A visit to the API Documentation page
+- GET https://pro-lite-api.herokuapp.com/ - Welcome Endpoint
+- GET https://pro-lite-api.herokuapp.com/api-docs - A visit to the API Documentation page
 
-- POST https://propertypro-lite-api.herokuapp.com/api/v1/property - Endpoint that allows for posting a property
+- POST https://pro-lite-api.herokuapp.com/api/v1/property - Endpoint that allows for posting a property
 
-- GET https://propertypro-lite-api.herokuapp.com/api/v1/property - Endpoint returns all posted properties
+- GET https://pro-lite-api.herokuapp.com/api/v1/property - Endpoint returns all posted properties
 
-- DELETE https://propertypro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint deletes a property
-- GET https://propertypro-lite-api.herokuapp.com/api/v1/property?type=2-bedroom - Endpoint returns an array of all property adverts of property type 1-bedroom,Minflat etc.
+- DELETE https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint deletes a property
+- GET https://pro-lite-api.herokuapp.com/api/v1/property?type=2-bedroom - Endpoint returns an array of all property adverts of property type 1-bedroom,Minflat etc.
 
-- GET https://propertypro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint returns the property advert with id number 2.
+- GET https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint returns the property advert with id number 2.
 
-- PATCH https://propertypro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint enables for updating property with id number 2.
+- PATCH https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint enables for updating property with id number 2.
 
-- PATCH https://propertypro-lite-api.herokuapp.com/api/v1/property/2/Sold - Endpoint marking of property as sold
+- PATCH https://pro-lite-api.herokuapp.com/api/v1/property/2/Sold - Endpoint marking of property as sold
 
-- POST https://propertypro-lite-api.herokuapp.com/api/v1/auth/signup - Endpoint creates a new user and returns a signup token.
+- POST https://pro-lite-api.herokuapp.com/api/v1/auth/signup - Endpoint creates a new user and returns a signup token.
 
-- POST https://propertypro-lite-api.herokuapp.com/api/v1/auth/signin - Endpoint allows an already registered user to login on providing matching credientials.
+- POST https://pro-lite-api.herokuapp.com/api/v1/auth/signin - Endpoint allows an already registered user to login on providing matching credientials.
 
 
 #### Running Tests
