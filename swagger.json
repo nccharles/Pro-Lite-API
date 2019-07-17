@@ -1,15 +1,15 @@
 {
-  "swagger" : "2.0.0",
+  "swagger" : "2.0",
   "info" : {
     "description" : "Property Pro Lite is a platform where people can create and/or search properties for sale or rent.",
     "version" : "2.0.0",
     "title" : "Property Pro Lite",
     "contact" : {
       "name" : "PropertyPro Lite API Documentation",
-      "url" : "https://propertypro-lite-api.herokuapp.com/api-docs"
+      "url" : "https://pro-lite-api.herokuapp.com/api-docs"
     }
   },
-  "host" : "propertypro-lite-api.herokuapp.com",
+  "host" : "pro-lite-api.herokuapp.com",
   "basePath" : "/api/v1",
   "tags" : [ {
     "name" : "Authentication",
@@ -146,12 +146,12 @@
         "deprecated" : false
       }
     },
-    "/property?type=propertyType" : {
+    "/property/" : {
       "get" : {
         "tags" : [ "Fetch specific property type" ],
         "summary" : "Get all properties of specific type",
         "description" : "User can view all properties of a specific type - 2 bedroom, 3 bedroom, mini flat etc.",
-        "operationId" : "PropertyGet",
+        "operationId" : "Get",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "type",
@@ -366,6 +366,12 @@
           "type" : "string"
         },
         "image" : {
+          "type" : "string"
+        },
+        "price" : {
+          "type" : "number"
+        },
+        "created_on" : {
           "type" : "string"
         }
       },

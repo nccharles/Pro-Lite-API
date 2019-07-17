@@ -1,6 +1,5 @@
 // get window when scrolled
 window.addEventListener('scroll', ()=> {
-    console.log(screen.width)
     if (window.scrollY > 20) {
         document.querySelector('#scrolled').classList.add('scrolled')
     } else {

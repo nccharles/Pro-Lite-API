@@ -129,7 +129,6 @@ const Property = {
                     });
             }
         } catch (err) {
-            console.log(err)
             return findError(res);
         }
     },
