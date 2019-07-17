@@ -31,9 +31,11 @@ The tools and modules employed in this project are:
 #### Development Setup
 To start this project, install the required modules and dependencies locally using yarn:
 ##### Usage Example
-###### Clone a repository
+##### git Clone this [Repository](https://github.com/nccharles/Pro-Lite-API.git)
 ```
 yarn
+yarn run db:create
+yarn run db:migrate
 yarn run start-dev
 ```
 
@@ -61,29 +63,29 @@ Signing into the property-pro-lite platform will require a login details as:
 
 
 #### Endpoints
-- GET https://pro-lite-api.herokuapp.com/ - Welcome Endpoint
-- GET https://pro-lite-api.herokuapp.com/api-docs - A visit to the API Documentation page
-
-- POST https://pro-lite-api.herokuapp.com/api/v1/property - Endpoint that allows for posting a property
-
-- GET https://pro-lite-api.herokuapp.com/api/v1/property - Endpoint returns all posted properties
-
-- DELETE https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint deletes a property
-- GET https://pro-lite-api.herokuapp.com/api/v1/property?type=2-bedroom - Endpoint returns an array of all property adverts of property type 1-bedroom,Minflat etc.
-
-- GET https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint returns the property advert with id number 2.
-
-- PATCH https://pro-lite-api.herokuapp.com/api/v1/property/2 - Endpoint enables for updating property with id number 2.
-
-- PATCH https://pro-lite-api.herokuapp.com/api/v1/property/2/Sold - Endpoint marking of property as sold
-
-- POST https://pro-lite-api.herokuapp.com/api/v1/auth/signup - Endpoint creates a new user and returns a signup token.
-
-- POST https://pro-lite-api.herokuapp.com/api/v1/auth/signin - Endpoint allows an already registered user to login on providing matching credientials.
+|Verb    | Endpoint                                                         | Description            |
+|--------|------------------------------------------------------------------|------------------------|
+|GET     |https://pro-lite-api.herokuapp.com/                               | Welcome Endpoint       |
+|GET     |https://pro-lite-api.herokuapp.com/api-docs                       | API Documentation page |
+|POST    |https://pro-lite-api.herokuapp.com/api/v1/property                | add property           |
+| GET    |https://pro-lite-api.herokuapp.com/api/v1/property                | Get all properties     |
+| DELETE |https://pro-lite-api.herokuapp.com/api/v1/property/2              |  Deletes a property    |
+| GET    |https://pro-lite-api.herokuapp.com/api/v1/property?type=2-bedroom |Get Specific Properties |
+| GET    |https://pro-lite-api.herokuapp.com/api/v1/property/2              | Get one Property       |
+| PATCH  | https://pro-lite-api.herokuapp.com/api/v1/property/2             | Update property        |
+| PATCH  | https://pro-lite-api.herokuapp.com/api/v1/property/2/Sold        |Mark as sold            |
+| POST   | https://pro-lite-api.herokuapp.com/api/v1/auth/signup            | Endpoint of Signup.    |
+| POST   | https://pro-lite-api.herokuapp.com/api/v1/auth/signin            | Endpoint of Sign in    |
 
 
 #### Running Tests
-Tests are run by calling ```yarn test``` after installing and setting up testing suites:
+Tests are run by calling 
+```
+yarn
+yarn run test:db:migrate
+yarn run test
+```
+ after installing and setting up testing suites:
 - Mocha
 - Chai
 - Chai HTTP
