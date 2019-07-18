@@ -23,7 +23,7 @@ export default class User {
         const SignedUp = {
           id, token, first_name, last_name, email,phoneNumber,address
         };
-          return authFeedback(res, 201, ...['status', 201,'user Successfully Created', 'data', SignedUp]);
+          return authFeedback(res, 201, ...['status', 201,'message','user Created Successfully', 'data', SignedUp]);
         })
         .catch(err => {
           return findError(res);
@@ -41,7 +41,7 @@ export default class User {
     db.querySignin(columns, values)
       .then(response => {
        
-        if (!response) {
+        if (!response.length) {
           return serverFeedback(
             res,
             404,
@@ -58,7 +58,7 @@ export default class User {
         }]= response;
         const decryptedPassword = Authentication.comparePassword(password, checkPassword);
         if (!decryptedPassword) {
-          return serverFeedback(res, 422, ...['status', 422, 'message', 'Incorrect Password']);
+          return serverFeedback(res, 422, ...['status', 422, 'error', 'Incorrect Password']);
         }
         const token = generateToken({ id, email, phonenumber });
         
@@ -66,7 +66,7 @@ export default class User {
           id, token, first_name, last_name, email
         };
         
-        return userFeedback(res, 200,...['status',200,'Ok','data',loggedIn]);
+        return userFeedback(res, 200,...['status',200,'message','Ok','data',loggedIn]);
       }).catch(err => {
         return findError(res);
       })

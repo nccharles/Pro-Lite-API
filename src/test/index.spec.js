@@ -5,9 +5,9 @@ import server from '../index';
 import db from "../database";
 const { expect } = chai;
 chai.use(chaiHttp);
-let userToken = null;
-let userID=null;
-let proId=null
+let userToken;
+let userID;;
+let proId;
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
     chai.request(server)
@@ -24,7 +24,7 @@ describe('Testing welcome endpoints', () => {
     chai.request(server)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'soul@gmail.com',
+        email: 'charles@gmail.com',
         first_name: 'Charles',
         last_name: 'NDAYISABA',
         password: 'Ncinhouse',
@@ -51,7 +51,7 @@ describe('Testing welcome endpoints', () => {
     chai.request(server)
       .post('/api/v1/auth/signin')
       .send({
-        email: 'soul@gmail.com',
+        email: 'charles@gmail.com',
         password: 'Ncinhouse'
       })
       .end((err, res) => {
@@ -110,7 +110,7 @@ describe('ENDPOINTS TESTING', () => {
       .patch(`/api/v1/property/${proId}`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
-        price: 4200000,
+        price: 4600000,
         state: 'Kigali',
         city: 'Kigali',
         address: 'Kicukiro KK 15 Road',
@@ -124,10 +124,10 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
-        expect(res.body).to.have.ownProperty('status').that.equals(200);
+        expect(res.body).to.have.ownProperty('status').that.equal(200);
         expect(res.body).to.have.ownProperty('data').to.be.an('object');
         expect(res.body).to.have.ownProperty('message').to.be.an('string');
-        expect(res.body).to.have.ownProperty('message').to.equal('Ok');
+        expect(res.body).to.have.ownProperty('message').to.equal('Updated Successfully');
         expect(res.body.data.id).to.be.a('number');
         expect(res.body.data.owner).to.be.a('number');
         expect(res.body.data.status).to.be.a('string');
@@ -178,8 +178,8 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body.data[0].city).to.be.a('string');
         expect(res.body.data[0].address).to.be.a('string');
         expect(res.body.data[0].price).to.be.a('number');
-        expect(res.body.data[0].owneremail).to.be.a('string');
-        expect(res.body.data[0].ownerphonenumber).to.be.a('string');
+        expect(res.body.data[0].owner_email).to.be.a('string');
+        expect(res.body.data[0].owner_phonenumber).to.be.a('string');
         done();
       });
   });
@@ -232,7 +232,7 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-  it('should return message if property ID does not exist', (done) => {
+  it('should return error if property ID does not exist', (done) => {
     chai.request(server)
       .delete('/api/v1/property/45')
       .set('Authorization', `Bearer ${userToken}`)
@@ -248,13 +248,13 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-  it('should return a message `Something went wrong!`', (done) => {
+  it('should return a message `This Property not fund.`', (done) => {
     chai.request(server)
       .patch('/api/v1/property/27/sold')
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status', 'message');
+        expect(res.body).to.have.keys('status','message');
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
@@ -263,18 +263,18 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
- 
+  
   it('should return a message `Token must be provided`', (done) => {
     chai.request(server)
       .patch('/api/v1/property/1/sold')
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status', 'message');
+        expect(res.body).to.have.keys('status', 'error');
         expect(res.status).to.equal(403);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body.status).to.be.a('number');
-        expect(res.body.message).to.be.an('string');
+        expect(res.body.error).to.be.an('string');
         done();
       });
   });
