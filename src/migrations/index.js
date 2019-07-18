@@ -1,1 +1,1 @@
-import './create_tables';
+import './create_tables'
