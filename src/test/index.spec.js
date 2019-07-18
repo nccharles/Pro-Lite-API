@@ -6,7 +6,7 @@ import db from "../database";
 const { expect } = chai;
 chai.use(chaiHttp);
 let userToken;
-let userID;;
+let userID;
 let proId;
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
