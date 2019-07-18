@@ -6,17 +6,17 @@ const pool = new Pool({
 });
 const query = (text, params, isArr = false) => {
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     pool
       .query(text, params)
-      .then(response => {
+      .then(async  response => {
         const { rows } = response;
         isArr ? resolve(rows) : resolve(rows[0]);
-        pool.end();
+        await process.exit(0);
       })
-      .catch(err => {
+      .catch(async err => {
         reject(err);
-        pool.end();
+        await process.exit(0);
       });
   });
 };
@@ -38,7 +38,7 @@ const findByOne = async (columns, condition) => {
   const { rows } = await pool.query(query);
   return rows;
 };
-const deleteProperty =async (condition) => {
+const deleteProperty = async (condition) => {
   const queryString = `DELETE FROM property WHERE ${condition} RETURNING *;`;
   const { rows } = await pool.query(queryString);
   return rows[0];
@@ -60,20 +60,5 @@ const getProperties = async (columns, condition) => {
   const { rows } = await pool.query(query);
   return rows;
 }
-const createTable = migrationText => {
 
-  return new Promise((resolve, reject) => {
-    pool
-      .query(migrationText)
-      .then(response => {
-        resolve(response);
-        pool.end();
-      })
-      .catch(err => {
-        reject(err);
-        pool.end();
-      });
-  });
-};
-
-export default { query,markSold, getProperties, updateProperty, deleteProperty, queryCreate, querySignin, createTable, findByOne };
+export default { query, markSold, getProperties, updateProperty, deleteProperty, queryCreate, querySignin, findByOne };

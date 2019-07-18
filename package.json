@@ -8,7 +8,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel src --out-dir build",
     "start": "NODE_ENV=production npm run build && node build/index.js",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register 'src/**/**spec.js' ---exit",
+    "test": "NODE_ENV=test  nyc --reporter=html --reporter=text mocha --require @babel/register 'src/**/**spec.js' ---exit",
     "showCoverage": "coverage/index.html",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "generate-lcov": "nyc report --reporter=text-lcov >lcov.info",
@@ -16,6 +16,7 @@
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
     "coverage": "npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",
     "db:migrate": "node --require @babel/register src/migrations/index.js --exit",
+    "dev:db:migrate": "NODE_ENV=development node --require @babel/register src/migrations/index.js --exit",
     "test:db:migrate": "NODE_ENV=test node --require @babel/register src/migrations/index.js --exit",
     "db:create": "sudo -u postgres psql -qAtX -v ON_ERRORS_STOP=1 -f src/database/createdb.sql"
   },

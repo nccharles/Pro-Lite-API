@@ -33,7 +33,7 @@ const signup = Joi.object().keys({
 // error message function
 const error = (err, res) => {
     const errMessage = err.details[0].message;
-    return serverFeedback(res, 422, 'status', 422, 'error', errMessage);
+    return serverFeedback(res, 422, ...['status',422, 'error', errMessage]);
 };
 // validations
 const validSignup = (req, res, next) => {
@@ -52,7 +52,7 @@ const validSignup = (req, res, next) => {
             return next();
         });
     }
-    return serverFeedback(res, 422, 'status', 422, 'error', 'password must be atleast 6 characters and contains uppercase');
+    return serverFeedback(res, 422, ...['status', 422, 'error', 'password must be atleast 6 characters and contains uppercase']);
 }
 const validSignin = (req, res, next) => {
     let { email, password } = req.body;
