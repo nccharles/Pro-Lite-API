@@ -21,19 +21,20 @@ const query = (text, params, isArr = false) => {
       });
   });
 };
-const checkProperty = async (res, userId, proId) => {
-  const prop = `SELECT id FROM property WHERE id =${proId} ;`;
-  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
 
-  const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
-  if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
-
-}
 const queryCreate = async (table, columns, values) => {
 
   const queryString = `INSERT INTO ${table} (${columns}) VALUES (${values}) RETURNING *;`;
   const { rows: Result } = await pool.query(queryString);
   return Result[0];
+};
+const proCreate = async (res, table, columns, values, condition) => {
+  const prop = `SELECT id FROM property ${condition};`;
+  if ((await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property Alread Inserted!`]); }
+
+  const queryString = `INSERT INTO ${table} (${columns}) VALUES (${values}) RETURNING *;`;
+  const { rows: Result } = await pool.query(queryString);
+  return serverFeedback(res, 201, ...['status', 201, 'message', 'Property Successfully posted', 'data', Result[0]]);
 };
 const querySignin = async (columns, condition) => {
 
@@ -50,7 +51,7 @@ const findByOne = async (columns, condition) => {
 
 
 const deleteProperty = async (res, userId, proId) => {
-  
+
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
   if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
 
@@ -63,7 +64,7 @@ const deleteProperty = async (res, userId, proId) => {
 }
 
 const updateProperty = async (res, columns, userId, proId) => {
-  
+
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
   if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
 
@@ -76,7 +77,7 @@ const updateProperty = async (res, columns, userId, proId) => {
 };
 
 const markSold = async (res, userId, proId) => {
-  
+
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
   if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
 
@@ -95,4 +96,4 @@ const getProperties = async (columns, condition) => {
   return rows;
 }
 
-export default { query, markSold, getProperties, updateProperty, deleteProperty, queryCreate, querySignin, findByOne };
+export default { query, markSold, getProperties, updateProperty, proCreate, deleteProperty, queryCreate, querySignin, findByOne };
