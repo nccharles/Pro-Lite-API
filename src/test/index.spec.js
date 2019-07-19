@@ -351,16 +351,5 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-  it("It should truncate table property", done => {
-    const queryText = "TRUNCATE property CASCADE";
-    db.query(queryText)
-      .then(response => {
-          expect(response).to.be.an("array");
-          expect(response.length).to.equal(0);
-        done();
-      })
-      .catch(err => {
-        done();
-      });
-  });
+  
 });

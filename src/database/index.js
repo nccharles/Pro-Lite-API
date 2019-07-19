@@ -50,21 +50,39 @@ const findByOne = async (columns, condition) => {
 
 
 const deleteProperty = async (res, userId, proId) => {
-  checkProperty(res, userId, proId)
+  
+  const prop = `SELECT id FROM property WHERE id =${proId} ;`;
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+
+  const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
+  if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
+
   const queryString = `DELETE FROM property WHERE owner = ${userId} AND id =${proId};`;
   await pool.query(queryString);
   return serverFeedback(res, 200, ...['status', 200, 'message', 'Deleted Successfully!']);
 }
 
 const updateProperty = async (res, columns, userId, proId) => {
-  checkProperty(res, userId, proId)
+  
+  const prop = `SELECT id FROM property WHERE id =${proId} ;`;
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+
+  const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
+  if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
+
   const query = `UPDATE property SET ${columns} WHERE owner = ${userId} AND id =${proId} RETURNING *;`;
   const { rows } = await pool.query(query);
   return serverFeedback(res, 200, ...['status', 200, 'message', 'Updated Successfully', 'data', rows[0]]);
 };
 
 const markSold = async (res, userId, proId) => {
-  checkProperty(res, userId, proId)
+  
+  const prop = `SELECT id FROM property WHERE id =${proId} ;`;
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+
+  const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
+  if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
+
   const query = `UPDATE property SET status='Sold' WHERE owner = ${userId} AND id =${proId} RETURNING *;`;
   const { rows } = await pool.query(query);
   return serverFeedback(res, 200, ...['status', 200, 'message', 'Marked as Sold!', 'data', rows[0]]);
