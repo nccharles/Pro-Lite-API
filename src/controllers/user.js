@@ -26,7 +26,7 @@ export default class User {
           return authFeedback(res, 201, ...['status', 201,'message','user Created Successfully', 'data', SignedUp]);
         })
         .catch(err => {
-          return findError(res);
+          return serverFeedback(res, 403, ...['status', 403, 'message', `This Email Already exists.`]);
         });
     } catch (err) {
       return findError(res);

@@ -14,18 +14,17 @@ const Property = {
             } = req.body;
             const table = 'property'
             const columns = `owner, state, city, address, type, price,image_url`;
+            const condition=`WHERE owner ='${id}' AND state='${state}' AND city='${city}' AND address='${address}' AND type='${type}' AND price='${price}'`;
             const values = `'${id}','${state}', '${city}', '${address}', '${type}', '${price}', '${image_url}'`;
-            db.queryCreate(table, columns, values)
-                .then(property => {
-                    if (property) {
-                        return serverFeedback(res, 201, ...['status', 201, 'message', 'Property Successfully posted', 'data', property]);
-                    }
-                    return findError(res);
-                })
-                .catch(err => {
+            db.proCreate(res,table, columns, values, condition)
+                .then(response => {
+                    return response
+                }).catch(err => {
+                    console.log(err)
                     return findError(res);
                 });
         } catch (err) {
+            
             return findError(res);
         }
     },
@@ -90,7 +89,7 @@ const Property = {
         try {
             const { id } = req.tokenData;
             const { propertyId } = req.params;
-            db.markSold(res,id, propertyId)
+            db.markSold(res, id, propertyId)
                 .then(response => {
                     return response
                 }).catch(err => {
