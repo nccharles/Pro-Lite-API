@@ -40,7 +40,7 @@ const Property = {
                 p_price = null,
                 p_image_url = null;
             if (process.env.NODE_ENV !== 'test') {
-                image_url = req.files !== null ? await imageUpload(req.files.image_url) : null
+                image_url = req.files !== null ? await imageUpload(req.files.image_url) : "https://images.io/123"
             }
             const { id } = req.tokenData;
             const { propertyId } = req.params;
@@ -58,19 +58,14 @@ const Property = {
                 p_image_url = image_url ? `image_url='${image_url}'` : "";
                 columns = `${p_state} ${p_city} ${p_type} ${p_address} ${p_price} ${p_image_url}`;
             }
-            const condition = `owner = ${id} AND id =${propertyId}`;
-            db.updateProperty(columns, condition)
+            db.updateProperty(res, columns, id, propertyId)
                 .then(response => {
-                    if (response) {
-                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Updated Successfully', 'data', response]);
-                    }
-                    return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund.`]);
+                    return response
                 })
                 .catch(err => {
                     return findError(res);
                 });
         } catch (err) {
-            console.log(err)
             return findError(res);
         }
     },
@@ -79,13 +74,9 @@ const Property = {
         try {
             const { id } = req.tokenData;
             const { propertyId } = req.params;
-            const condition = `owner = ${id} AND id =${propertyId}`;
-            db.deleteProperty(condition)
+            db.deleteProperty(res, id, propertyId)
                 .then(response => {
-                    if (response) {
-                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Deleted Successfully!']);
-                    }
-                    return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
+                    return response
                 })
                 .catch(err => {
                     return findError(res);
@@ -99,15 +90,10 @@ const Property = {
         try {
             const { id } = req.tokenData;
             const { propertyId } = req.params;
-            const condition = `owner = ${id} AND id =${propertyId}`;
-            db.markSold(condition)
+            db.markSold(res,id, propertyId)
                 .then(response => {
-                    if (response) {
-                        return serverFeedback(res, 200, ...['status', 200, 'message', 'Marked as Sold!']);
-                    }
-                    return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
-                })
-                .catch(err => {
+                    return response
+                }).catch(err => {
                     return findError(res);
                 });
 
@@ -129,8 +115,7 @@ const Property = {
                             return serverFeedback(res, 200, ...['status', 200, 'message', 'success', 'data', response]);
                         }
                         return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
-                    })
-                    .catch(err => {
+                    }).catch(err => {
                         return findError(res);
                     });
 
@@ -141,8 +126,7 @@ const Property = {
                         if (!response.length) return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
 
                         return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
-                    })
-                    .catch(err => {
+                    }).catch(err => {
                         return findError(res);
                     });
             }

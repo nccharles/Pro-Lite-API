@@ -47,10 +47,10 @@ const createAllTables = async () => {
   }
 };
 
-const prpertyProTables = async () => {
+const propertyProTables = async () => {
   await dropping();
   await createAllTables();
   await process.exit(0);
 };
-prpertyProTables();
+propertyProTables();
 
