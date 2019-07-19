@@ -47,6 +47,21 @@ describe('Testing welcome endpoints', () => {
         done();
       });
   });
+  it('should not allow user to login if not exist', (done) => {
+    chai.request(server)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'churles@gmail.com',
+        password: 'Ncinhouse'
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.keys('status','message');
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.ownProperty('status').to.be.a('number');
+        done();
+      });
+  });
   it('should allow user to login if exist', (done) => {
     chai.request(server)
       .post('/api/v1/auth/signin')
@@ -73,6 +88,26 @@ describe('Testing welcome endpoints', () => {
   });
 })
 describe('ENDPOINTS TESTING', () => {
+  it('should return a message if save property failed', (done) => {
+    chai.request(server)
+      .post('/api/v1/property')
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({
+        price: 4200000,
+        state: 'Kigali',
+        city: 'Kigali',
+        address: 'Kicukiro KK 15 Road',
+      })
+      .end((err, res) => {
+        if (err) { done(err); }
+        expect(res.body).to.have.keys('status','error');
+        expect(res.status).to.equal(422);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.ownProperty('status').that.equals(422);
+        expect(res.body).to.have.ownProperty('error').that.equals(`"type" is required`);
+        done();
+      });
+  });
   it('should save property details provided by user', (done) => {
     chai.request(server)
       .post('/api/v1/property')
@@ -183,18 +218,44 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
+  it('should return a message if a Specific Property not fund', (done) => {
+    chai.request(server)
+      .get(`/api/v1/property/200`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.body).to.have.keys('status','message');
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.ownProperty('status').to.be.a('number');
+        done();
+      });
+  });
   it('should mark property as Sold', (done) => {
     chai.request(server)
       .patch(`/api/v1/property/${proId}/sold`)
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status','message');
+        expect(res.body).to.have.keys('status','message','data');
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body).to.have.ownProperty('message').to.be.an('string');
         expect(res.body).to.have.ownProperty('message').to.equal('Marked as Sold!');
+        done();
+      });
+  });
+  it('should mark property as Sold', (done) => {
+    chai.request(server)
+      .patch(`/api/v1/property/4/sold`)
+      .set('Authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.body).to.have.keys('status','error');
+        expect(res.status).to.equal(404);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.ownProperty('status').to.be.a('number');
+        expect(res.body).to.have.ownProperty('error').to.be.an('string');
+        expect(res.body).to.have.ownProperty('error').to.equal('This Property not fund!');
         done();
       });
   });
@@ -238,28 +299,28 @@ describe('ENDPOINTS TESTING', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status', 'message');
+        expect(res.body).to.have.keys('status', 'error');
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body.status).to.be.a('number');
-        expect(res.body.message).to.be.an('string');
-        expect(res.body.message).to.equal('This Property not fund.');
+        expect(res.body.error).to.be.an('string');
+        expect(res.body.error).to.equal('This Property not fund!');
         done();
       });
   });
-  it('should return a message `This Property not fund.`', (done) => {
+  it('should return a error `This Property not fund.`', (done) => {
     chai.request(server)
       .patch('/api/v1/property/27/sold')
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
-        expect(res.body).to.have.keys('status','message');
+        expect(res.body).to.have.keys('status','error');
         expect(res.status).to.equal(404);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body.status).to.be.a('number');
-        expect(res.body.message).to.be.an('string');
+        expect(res.body.error).to.be.an('string');
         done();
       });
   });
@@ -280,6 +341,18 @@ describe('ENDPOINTS TESTING', () => {
   });
   it("It should truncate table users", done => {
     const queryText = "TRUNCATE users CASCADE";
+    db.query(queryText)
+      .then(response => {
+          expect(response).to.be.an("array");
+          expect(response.length).to.equal(0);
+        done();
+      })
+      .catch(err => {
+        done();
+      });
+  });
+  it("It should truncate table property", done => {
+    const queryText = "TRUNCATE property CASCADE";
     db.query(queryText)
       .then(response => {
           expect(response).to.be.an("array");
