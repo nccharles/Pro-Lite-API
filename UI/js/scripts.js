@@ -1,6 +1,7 @@
 // Cloudinary Upload Image script
 const CLOUDINARY_URL='https://api.cloudinary.com/v1_1/nccharles/image/upload'
 const CLAUDINARY_UPLOAD_PRESET="yvf1btz9"
+
 const imgPreview= document.getElementById('img-preview');
 const fileUpload = document.getElementById('file-upload');
 
@@ -17,7 +18,9 @@ fileUpload.addEventListener('change', (event)=>{
         },
         data:formData
     }).then(res=>{
+        console.log(res)
         imgPreview.src=res.data.secure_url;
     }).catch(err=>{
+        console.log(err)
     });
 });
