@@ -11,7 +11,7 @@ let proId;
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
     chai.request(server)
-      .get('/')
+      .get('/api/v1')
       .end((err, res) => {
         if (err) return done(err);
         expect((res.status)).to.equal(200);
