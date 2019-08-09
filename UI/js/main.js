@@ -1,5 +1,6 @@
 // get window when scrolled
 window.addEventListener('scroll', ()=> {
+    console.log(screen.width)
     if (window.scrollY > 20) {
         document.querySelector('#scrolled').classList.add('scrolled')
     } else {
@@ -23,11 +24,25 @@ let front = document.querySelector(".side-front");
 let right = document.querySelector(".side-right");
 let back=document.querySelector(".side-back");
 let footer=document.querySelector(".footer");
+let modal=document.querySelector(".modal-content");
 // onload function
 const showScrolled=()=>{
     usernav.style.display="block"
     adminnav.style.display="none"
     window.scrollTo(0, 20)
+}
+// show details of property
+const showModal=()=>{
+    modal.style.display='block'
+}
+// hide details of property
+const hideModal=()=>{
+    modal.style.display='none'
+}
+// hide details of property
+const fraudModal=()=>{
+    modal.style.display='none'
+    alert('You reported as fraudulent.')
 }
 // show my property when i signed in
 const showMyProperty=() => {
