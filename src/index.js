@@ -4,17 +4,12 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json'
 import prouter from './routers/property';
 import bodyParser from 'body-parser'
-import path from "path";
-import pages from './routers/pages';
 const app = express();
 const port = process.env.PORT || 8080
 // Body parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-//load static pages html and cess
-app.use(express.static(path.join(__dirname, "../UI")));
-app.use('/',pages)
-app.get('/api/v3', (req, res) => {
+app.get('/', (req, res) => {
   return res.status(200).json({
     status: 200,
     message: 'Welcome to PropertyPro-Lite',
