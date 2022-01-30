@@ -115,7 +115,6 @@ const Property = {
                         }
                         return serverFeedback(res, 404, ...['status', 404, 'message', `This property not found.`]);
                     }).catch(err => {
-                        console.log(err)
                         return findError(res);
                     });
 
@@ -125,7 +124,6 @@ const Property = {
 
                         return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
                     }).catch(err => {
-                        console.log(err)
                         return findError(res);
                     });
             }
