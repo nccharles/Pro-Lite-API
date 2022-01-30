@@ -14,15 +14,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //load static pages html and cess
 app.use(express.static(path.join(__dirname, "../UI")));
 app.use('/',pages)
-app.get('/api/v1', (req, res) => {
+app.get('/api/v3', (req, res) => {
   return res.status(200).json({
     status: 200,
     message: 'Welcome to PropertyPro-Lite',
   });
 })
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/api/v1/auth/', Authentication);
-app.use('/api/v1/property/', prouter);
+app.use('/api/v3/auth/', Authentication);
+app.use('/api/v3/property/', prouter);
 const server = app.listen(port);
 console.log('app running on port ', port);
 export default server;

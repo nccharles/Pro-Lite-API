@@ -53,7 +53,7 @@ const findByOne = async (columns, condition) => {
 const deleteProperty = async (res, userId, proId) => {
 
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
-  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not found!`]); }
 
   const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
   if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
@@ -66,7 +66,7 @@ const deleteProperty = async (res, userId, proId) => {
 const updateProperty = async (res, columns, userId, proId) => {
 
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
-  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not found!`]); }
 
   const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
   if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);
@@ -79,7 +79,7 @@ const updateProperty = async (res, columns, userId, proId) => {
 const markSold = async (res, userId, proId) => {
 
   const prop = `SELECT id FROM property WHERE id =${proId} ;`;
-  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not fund!`]); }
+  if (!(await pool.query(prop)).rows[0]) { return serverFeedback(res, 404, ...['status', 404, 'error', `This Property not found!`]); }
 
   const proOwner = `SELECT owner FROM property WHERE owner = ${userId} AND id =${proId} ;`;
   if (!(await pool.query(proOwner)).rows[0]) return serverFeedback(res, 401, ...['status', 401, 'error', `Unauthorized: This property is not yours`]);

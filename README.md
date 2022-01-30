@@ -67,15 +67,15 @@ Signing into the property-pro-lite platform will require a login details as:
 |--------|------------------------------------------------------------------|------------------------|
 |GET     |https://pro-lite-api.herokuapp.com/                               | Welcome Endpoint       |
 |GET     |https://pro-lite-api.herokuapp.com/api-docs                       | API Documentation page |
-|POST    |https://pro-lite-api.herokuapp.com/api/v1/property                | add property           |
-| GET    |https://pro-lite-api.herokuapp.com/api/v1/property                | Get all properties     |
-| DELETE |https://pro-lite-api.herokuapp.com/api/v1/property/2              |  Deletes a property    |
-| GET    |https://pro-lite-api.herokuapp.com/api/v1/property?type=2-bedroom |Get Specific Properties |
-| GET    |https://pro-lite-api.herokuapp.com/api/v1/property/2              | Get one Property       |
-| PATCH  | https://pro-lite-api.herokuapp.com/api/v1/property/2             | Update property        |
-| PATCH  | https://pro-lite-api.herokuapp.com/api/v1/property/2/Sold        |Mark as sold            |
-| POST   | https://pro-lite-api.herokuapp.com/api/v1/auth/signup            | Endpoint of Signup.    |
-| POST   | https://pro-lite-api.herokuapp.com/api/v1/auth/signin            | Endpoint of Sign in    |
+|POST    |https://pro-lite-api.herokuapp.com/api/v3/property                | add property           |
+| GET    |https://pro-lite-api.herokuapp.com/api/v3/property                | Get all properties     |
+| DELETE |https://pro-lite-api.herokuapp.com/api/v3/property/2              |  Deletes a property    |
+| GET    |https://pro-lite-api.herokuapp.com/api/v3/property?type=2-bedroom |Get Specific Properties |
+| GET    |https://pro-lite-api.herokuapp.com/api/v3/property/2              | Get one Property       |
+| PATCH  | https://pro-lite-api.herokuapp.com/api/v3/property/2             | Update property        |
+| PATCH  | https://pro-lite-api.herokuapp.com/api/v3/property/2/Sold        |Mark as sold            |
+| POST   | https://pro-lite-api.herokuapp.com/api/v3/auth/signup            | Endpoint of Signup.    |
+| POST   | https://pro-lite-api.herokuapp.com/api/v3/auth/signin            | Endpoint of Sign in    |
 
 
 #### Running Tests

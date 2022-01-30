@@ -110,10 +110,10 @@ const Property = {
                 condition = `WHERE u.id=p.owner AND p.type = '${type}'`;
                 db.getProperties(columns, condition)
                     .then(response => {
-                        if (response.length) {
+                        if (response) {
                             return serverFeedback(res, 200, ...['status', 200, 'message', 'success', 'data', response]);
                         }
-                        return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
+                        return serverFeedback(res, 404, ...['status', 404, 'message', `This property not found.`]);
                     }).catch(err => {
                         return findError(res);
                     });
@@ -121,8 +121,6 @@ const Property = {
             } else {
                 db.getProperties(columns, condition)
                     .then(response => {
-
-                        if (!response.length) return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
 
                         return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
                     }).catch(err => {
@@ -141,7 +139,7 @@ const Property = {
             let condition = `WHERE u.id=p.owner AND p.id=${id}`;
             db.findByOne(columns, condition)
                 .then(response => {
-                    if (!response.length) return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not fund.`]);
+                    if (!response.length) return serverFeedback(res, 404, ...['status', 404, 'message', `This Property not found.`]);
 
                     return serverFeedback(res, 200, ...['status', 200, 'message', 'Ok', 'data', response]);
                 })

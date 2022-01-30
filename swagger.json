@@ -10,7 +10,7 @@
     }
   },
   "host" : "pro-lite-api.herokuapp.com",
-  "basePath" : "/api/v1",
+  "basePath" : "/api/v3",
   "tags" : [ {
     "name" : "Authentication",
     "description" : "Signup and Signin Endpoints"
