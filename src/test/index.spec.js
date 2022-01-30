@@ -11,7 +11,7 @@ let proId;
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
     chai.request(server)
-      .get('/api/v1')
+      .get('/api/v3')
       .end((err, res) => {
         if (err) return done(err);
         expect((res.status)).to.equal(200);
@@ -22,7 +22,7 @@ describe('Testing welcome endpoints', () => {
   });
   it('should insert user data to the database', (done) => {
     chai.request(server)
-      .post('/api/v1/auth/signup')
+      .post('/api/v3/auth/signup')
       .send({
         email: 'charles@gmail.com',
         first_name: 'Charles',
@@ -49,7 +49,7 @@ describe('Testing welcome endpoints', () => {
   });
   it('should not allow user to login if not exist', (done) => {
     chai.request(server)
-      .post('/api/v1/auth/signin')
+      .post('/api/v3/auth/signin')
       .send({
         email: 'churles@gmail.com',
         password: 'Ncinhouse'
@@ -64,7 +64,7 @@ describe('Testing welcome endpoints', () => {
   });
   it('should allow user to login if exist', (done) => {
     chai.request(server)
-      .post('/api/v1/auth/signin')
+      .post('/api/v3/auth/signin')
       .send({
         email: 'charles@gmail.com',
         password: 'Ncinhouse'
@@ -90,7 +90,7 @@ describe('Testing welcome endpoints', () => {
 describe('ENDPOINTS TESTING', () => {
   it('should return a message if save property failed', (done) => {
     chai.request(server)
-      .post('/api/v1/property')
+      .post('/api/v3/property')
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         price: 4200000,
@@ -110,7 +110,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should save property details provided by user', (done) => {
     chai.request(server)
-      .post('/api/v1/property')
+      .post('/api/v3/property')
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         price: 4200000,
@@ -142,7 +142,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should update property details provided by user', (done) => {
     chai.request(server)
-      .patch(`/api/v1/property/${proId}`)
+      .patch(`/api/v3/property/${proId}`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         price: 4600000,
@@ -177,7 +177,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should get all properties posted', (done) => {
     chai.request(server)
-      .get('/api/v1/property')
+      .get('/api/v3/property')
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message', 'data');
@@ -200,7 +200,7 @@ describe('ENDPOINTS TESTING', () => {
   
   it('should retrieve a Specific Property', (done) => {
     chai.request(server)
-      .get(`/api/v1/property/${proId}`)
+      .get(`/api/v3/property/${proId}`)
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message','data');
@@ -218,9 +218,9 @@ describe('ENDPOINTS TESTING', () => {
         done();
       });
   });
-  it('should return a message if a Specific Property not fund', (done) => {
+  it('should return a message if a Specific Property not found', (done) => {
     chai.request(server)
-      .get(`/api/v1/property/200`)
+      .get(`/api/v3/property/200`)
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message');
@@ -231,7 +231,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should mark property as Sold', (done) => {
     chai.request(server)
-      .patch(`/api/v1/property/${proId}/sold`)
+      .patch(`/api/v3/property/${proId}/sold`)
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -246,7 +246,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should mark property as Sold', (done) => {
     chai.request(server)
-      .patch(`/api/v1/property/4/sold`)
+      .patch(`/api/v3/property/4/sold`)
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -255,13 +255,13 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body).to.have.ownProperty('error').to.be.an('string');
-        expect(res.body).to.have.ownProperty('error').to.equal('This Property not fund!');
+        expect(res.body).to.have.ownProperty('error').to.equal('This Property not found!');
         done();
       });
   });
   it('should get all specific property types', (done) => {
     chai.request(server)
-      .get('/api/v1/property/?type=2-bedroom')
+      .get('/api/v3/property/?type=2-bedroom')
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message','data');
@@ -281,7 +281,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should delete a property', (done) => {
     chai.request(server)
-      .delete(`/api/v1/property/${proId}`)
+      .delete(`/api/v3/property/${proId}`)
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -295,7 +295,7 @@ describe('ENDPOINTS TESTING', () => {
   });
   it('should return error if property ID does not exist', (done) => {
     chai.request(server)
-      .delete('/api/v1/property/45')
+      .delete('/api/v3/property/45')
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -305,13 +305,13 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body.status).to.be.a('number');
         expect(res.body.error).to.be.an('string');
-        expect(res.body.error).to.equal('This Property not fund!');
+        expect(res.body.error).to.equal('This Property not found!');
         done();
       });
   });
-  it('should return a error `This Property not fund.`', (done) => {
+  it('should return a error `This Property not found.`', (done) => {
     chai.request(server)
-      .patch('/api/v1/property/27/sold')
+      .patch('/api/v3/property/27/sold')
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -327,7 +327,7 @@ describe('ENDPOINTS TESTING', () => {
   
   it('should return a message `Token must be provided`', (done) => {
     chai.request(server)
-      .patch('/api/v1/property/1/sold')
+      .patch('/api/v3/property/1/sold')
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status', 'error');
