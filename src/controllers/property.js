@@ -6,7 +6,7 @@ const Property = {
         try {
             const { id } = req.tokenData;
             let image_url;
-            image_url = process.env.NODE_ENV !== 'test' && req.files !== null ? await imageUpload(req.files.image_url) : "https://images.io/123"
+            image_url = process.env.NODE_ENV !== 'test' && req.files !== null ? await imageUpload(req.files.image_url) : "https://images.com/128"
             const {
                 state, city, address, type, price
             } = req.body;
