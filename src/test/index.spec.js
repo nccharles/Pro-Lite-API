@@ -11,7 +11,7 @@ let proId;
 describe('Testing welcome endpoints', () => {
   it('should accept status 200', (done) => {
     chai.request(server)
-      .get('/api/v3')
+      .get('/')
       .end((err, res) => {
         if (err) return done(err);
         expect((res.status)).to.equal(200);
@@ -204,8 +204,8 @@ describe('ENDPOINTS TESTING', () => {
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message','data');
+        expect(res.body).to.have.ownProperty('message').to.equal('Ok');
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.ownProperty('status').to.be.a('number');
         expect(res.body.data[0].id).to.be.a('number');
         expect(res.body.data[0].status).to.be.a('string');
         expect(res.body.data[0].state).to.be.a('string');
@@ -215,6 +215,7 @@ describe('ENDPOINTS TESTING', () => {
         expect(res.body.data[0].price).to.be.a('number');
         expect(res.body.data[0].owner_email).to.be.a('string');
         expect(res.body.data[0].owner_phonenumber).to.be.a('string');
+        expect(res.body.data[0].image_url).to.be.a('string');
         done();
       });
   });
@@ -224,6 +225,19 @@ describe('ENDPOINTS TESTING', () => {
       .end((err, res) => {
         if (err) done(err);
         expect(res.body).to.have.keys('status','message');
+        expect(res.body).to.have.ownProperty('message').to.equal('This Property not found!');
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.ownProperty('status').to.be.a('number');
+        done();
+      });
+  });
+  it('should return a message if a Property type not found', (done) => {
+    chai.request(server)
+      .get(`/api/v3/property/?type=500-bedroom`)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.body).to.have.keys('status','message');
+        expect(res.body).to.have.ownProperty('message').to.equal('This property not found!');
         expect(res.status).to.equal(404);
         expect(res.body).to.have.ownProperty('status').to.be.a('number');
         done();
